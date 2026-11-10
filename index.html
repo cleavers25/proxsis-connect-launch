@@ -1211,54 +1211,7 @@
       </div>
     </div>
 
-    <!-- TAUTAN LINK UNDANGAN GENERATOR (SHAREABLE PERSONALIZED INVITE) -->
-    <div class="link-generator-box">
-      <div class="generator-header">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-        </svg>
-        <h3>Tautan Link Undangan Khusus Peserta</h3>
-      </div>
-      <p class="generator-desc">
-        Pilih cepat nama penerima undangan di bawah ini untuk menghasilkan tautan khusus dan pesan WhatsApp resmi siap kirim:
-      </p>
 
-      <!-- 5 PRESETS: PAK RUDI, PAK YUMEI, PAK ADIT, PAK RONI, BUNG & JENG -->
-      <div class="preset-links-container">
-        <span class="preset-label">Pilih Cepat Nama Penerima:</span>
-        <div class="preset-pills-list">
-          <button type="button" class="preset-pill active" data-key="bungjeng" onclick="applyPreset('bungjeng')">👥 Bung & Jeng (All)</button>
-          <button type="button" class="preset-pill" data-key="rudi" onclick="applyPreset('rudi')">👔 Pak Rudi</button>
-          <button type="button" class="preset-pill" data-key="yumei" onclick="applyPreset('yumei')">👔 Pak Yumei</button>
-          <button type="button" class="preset-pill" data-key="adit" onclick="applyPreset('adit')">👔 Pak Adit</button>
-          <button type="button" class="preset-pill" data-key="roni" onclick="applyPreset('roni')">👔 Pak Roni</button>
-        </div>
-      </div>
-
-      <div class="input-row">
-        <input type="text" id="inputGuestName" class="form-control-input" placeholder="Nama / Panggilan (cth: Pak Rudi / Bung Dimas)">
-        <input type="text" id="inputGuestTitle" class="form-control-input" placeholder="Unit Bisnis / Organisasi (cth: Leader Proxsis Group)">
-        <button class="btn-update-pass" onclick="updatePersonalizedLink()">Perbarui Link</button>
-      </div>
-
-      <div class="share-link-bar">
-        <div class="share-url-text" id="personalizedUrlDisplay">Membuat tautan link undangan...</div>
-        <button class="btn-copy-link" onclick="copyInviteLink()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-          </svg>
-          Salin Link
-        </button>
-        <a href="#" id="waShareBtn" target="_blank" class="btn-wa-share">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-          </svg>
-          Kirim via WA
-        </a>
-      </div>
-    </div>
 
     <!-- STRATEGIC VALUE PROPOSITION FOR ALL PARTICIPANTS -->
     <section>
@@ -1462,42 +1415,48 @@
       const p = PRESETS[key];
       if (!p) return;
 
-      document.getElementById("inputGuestName").value = p.name;
-      document.getElementById("inputGuestTitle").value = p.title;
-      document.getElementById("displayGuestName").innerText = p.name;
-      document.getElementById("displayGuestTitle").innerText = p.title;
-      document.getElementById("rsvpName").value = p.shortName;
-      document.getElementById("rsvpRole").value = p.title;
+      const inputName = document.getElementById("inputGuestName");
+      if (inputName) inputName.value = p.name;
+      const inputTitle = document.getElementById("inputGuestTitle");
+      if (inputTitle) inputTitle.value = p.title;
+
+      const displayName = document.getElementById("displayGuestName");
+      if (displayName) displayName.innerText = p.name;
+      const displayTitle = document.getElementById("displayGuestTitle");
+      if (displayTitle) displayTitle.innerText = p.title;
+
+      const rsvpName = document.getElementById("rsvpName");
+      if (rsvpName) rsvpName.value = p.shortName;
+      const rsvpRole = document.getElementById("rsvpRole");
+      if (rsvpRole) rsvpRole.value = p.title;
 
       document.querySelectorAll(".preset-pill").forEach(el => el.classList.remove("active"));
       const btn = document.querySelector(`.preset-pill[data-key="${key}"]`);
       if (btn) btn.classList.add("active");
 
       const origin = window.location.origin;
-      let targetUrl = "";
-      if (key === "bungjeng") {
-        targetUrl = origin + "/";
-      } else {
-        targetUrl = origin + "/" + p.slug;
+      let targetUrl = (key === "bungjeng") ? (origin + "/") : (origin + "/" + p.slug);
+
+      const urlDisplay = document.getElementById("personalizedUrlDisplay");
+      if (urlDisplay) urlDisplay.innerText = targetUrl;
+
+      // Sapaan WhatsApp
+      const waBtn = document.getElementById("waShareBtn");
+      if (waBtn) {
+        const waText = `*UNDANGAN RESMI PELUNCURAN PROXSIS CONNECT*\n\n` +
+          `Halo ${p.name} 👋\n\n` +
+          `Kami mengundang Bapak/Rekan untuk hadir dalam sesi peluncuran resmi platform *Proxsis Connect (Powered by Coolify)*:\n\n` +
+          `🗓 *Rabu, 11 November 2026*\n` +
+          `⏰ *09.30 - 11.00 WIB*\n` +
+          `💻 *Via Zoom Virtual Meeting*\n\n` +
+          `Akses tautan undangan khusus & ruang Zoom:\n` +
+          `${targetUrl}\n\n` +
+          `_See it built. See it deployed._\n` +
+          `Sampai jumpa besok di ruang Zoom! 🚀\n\n` +
+          `Salam hangat,\n` +
+          `Tim Cloud & AI Infra Proxsis`;
+        waBtn.href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(waText);
       }
-
-      document.getElementById("personalizedUrlDisplay").innerText = targetUrl;
-
-      // Sapaan WhatsApp yang dipersonalisasi
-      const waText = `*UNDANGAN RESMI PELUNCURAN PROXSIS CONNECT*\n\n` +
-        `Halo ${p.name} 👋\n\n` +
-        `Kami mengundang Bapak/Rekan untuk hadir dalam sesi peluncuran resmi platform *Proxsis Connect (Powered by Coolify)*:\n\n` +
-        `🗓 *Rabu, 11 November 2026*\n` +
-        `⏰ *09.30 - 11.00 WIB*\n` +
-        `💻 *Via Zoom Virtual Meeting*\n\n` +
-        `Akses tautan undangan khusus & ruang Zoom:\n` +
-        `${targetUrl}\n\n` +
-        `_See it built. See it deployed._\n` +
-        `Sampai jumpa besok di ruang Zoom! 🚀\n\n` +
-        `Salam hangat,\n` +
-        `Tim Cloud & AI Infra Proxsis`;
-
-      document.getElementById("waShareBtn").href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(waText);
       if (triggerToast) {
         showToast(`✓ Undangan untuk ${p.shortName} siap dibagikan!`);
       }
@@ -1530,15 +1489,21 @@
       }
 
       if (guestName) {
-        document.getElementById("displayGuestName").innerText = guestName;
-        document.getElementById("inputGuestName").value = guestName;
-        document.getElementById("rsvpName").value = guestName;
+        const displayName = document.getElementById("displayGuestName");
+        if (displayName) displayName.innerText = guestName;
+        const inputName = document.getElementById("inputGuestName");
+        if (inputName) inputName.value = guestName;
+        const rsvpName = document.getElementById("rsvpName");
+        if (rsvpName) rsvpName.value = guestName;
         document.querySelectorAll(".preset-pill").forEach(el => el.classList.remove("active"));
       }
       if (guestTitle) {
-        document.getElementById("displayGuestTitle").innerText = guestTitle;
-        document.getElementById("inputGuestTitle").value = guestTitle;
-        document.getElementById("rsvpRole").value = guestTitle;
+        const displayTitle = document.getElementById("displayGuestTitle");
+        if (displayTitle) displayTitle.innerText = guestTitle;
+        const inputTitle = document.getElementById("inputGuestTitle");
+        if (inputTitle) inputTitle.value = guestTitle;
+        const rsvpRole = document.getElementById("rsvpRole");
+        if (rsvpRole) rsvpRole.value = guestTitle;
       }
 
       updatePersonalizedLinkUI();
@@ -1546,16 +1511,22 @@
 
     // 4. UPDATE PERSONALIZED LINK FROM MANUAL INPUT
     function updatePersonalizedLink() {
-      const name = document.getElementById("inputGuestName").value.trim();
-      const title = document.getElementById("inputGuestTitle").value.trim();
+      const inputName = document.getElementById("inputGuestName");
+      const inputTitle = document.getElementById("inputGuestTitle");
+      const name = inputName ? inputName.value.trim() : "";
+      const title = inputTitle ? inputTitle.value.trim() : "";
 
       if (name) {
-        document.getElementById("displayGuestName").innerText = name;
-        document.getElementById("rsvpName").value = name;
+        const displayName = document.getElementById("displayGuestName");
+        if (displayName) displayName.innerText = name;
+        const rsvpName = document.getElementById("rsvpName");
+        if (rsvpName) rsvpName.value = name;
       }
       if (title) {
-        document.getElementById("displayGuestTitle").innerText = title;
-        document.getElementById("rsvpRole").value = title;
+        const displayTitle = document.getElementById("displayGuestTitle");
+        if (displayTitle) displayTitle.innerText = title;
+        const rsvpRole = document.getElementById("rsvpRole");
+        if (rsvpRole) rsvpRole.value = title;
       }
 
       document.querySelectorAll(".preset-pill").forEach(el => el.classList.remove("active"));
@@ -1564,29 +1535,34 @@
     }
 
     function updatePersonalizedLinkUI() {
-      const name = document.getElementById("displayGuestName").innerText;
-      const title = document.getElementById("displayGuestTitle").innerText;
+      const displayName = document.getElementById("displayGuestName");
+      const displayTitle = document.getElementById("displayGuestTitle");
+      const name = displayName ? displayName.innerText : "";
+      const title = displayTitle ? displayTitle.innerText : "";
 
       const currentBaseUrl = window.location.origin + window.location.pathname;
       const personalizedUrl = currentBaseUrl + "?to=" + encodeURIComponent(name) + "&title=" + encodeURIComponent(title);
 
-      document.getElementById("personalizedUrlDisplay").innerText = personalizedUrl;
+      const urlDisplay = document.getElementById("personalizedUrlDisplay");
+      if (urlDisplay) urlDisplay.innerText = personalizedUrl;
 
       // WhatsApp share link
-      const waText = `*UNDANGAN RESMI PELUNCURAN PROXSIS CONNECT*\n\n` +
-        `Halo ${name}! 👋\n\n` +
-        `Kami mengundang Bapak/Ibu/Rekan untuk hadir dalam sesi peluncuran resmi platform *Proxsis Connect (Powered by Coolify)*:\n\n` +
-        `🗓 *Rabu, 11 November 2026*\n` +
-        `⏰ *09.30 - 11.00 WIB*\n` +
-        `💻 *Via Zoom Virtual Meeting*\n\n` +
-        `Akses tautan undangan khusus & ruang Zoom:\n` +
-        `${personalizedUrl}\n\n` +
-        `_See it built. See it deployed._\n` +
-        `Sampai jumpa besok di ruang Zoom! 🚀\n\n` +
-        `Salam hangat,\n` +
-        `Tim Cloud & AI Infra Proxsis`;
-
-      document.getElementById("waShareBtn").href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(waText);
+      const waBtn = document.getElementById("waShareBtn");
+      if (waBtn) {
+        const waText = `*UNDANGAN RESMI PELUNCURAN PROXSIS CONNECT*\n\n` +
+          `Halo ${name}! 👋\n\n` +
+          `Kami mengundang Bapak/Ibu/Rekan untuk hadir dalam sesi peluncuran resmi platform *Proxsis Connect (Powered by Coolify)*:\n\n` +
+          `🗓 *Rabu, 11 November 2026*\n` +
+          `⏰ *09.30 - 11.00 WIB*\n` +
+          `💻 *Via Zoom Virtual Meeting*\n\n` +
+          `Akses tautan undangan khusus & ruang Zoom:\n` +
+          `${personalizedUrl}\n\n` +
+          `_See it built. See it deployed._\n` +
+          `Sampai jumpa besok di ruang Zoom! 🚀\n\n` +
+          `Salam hangat,\n` +
+          `Tim Cloud & AI Infra Proxsis`;
+        waBtn.href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(waText);
+      }
     }
 
     // 4. COPY INVITE LINK TO CLIPBOARD
