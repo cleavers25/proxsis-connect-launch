@@ -235,6 +235,82 @@
       font-weight: 700;
     }
 
+    /* CENTER HERO CTA BUTTONS */
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 28px auto 36px auto;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-rsvp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      padding: 16px 36px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45);
+      transition: all 0.25s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-hero-rsvp:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 36px rgba(16, 185, 129, 0.65);
+      color: #ffffff;
+    }
+
+    .btn-hero-zoom {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(14, 165, 233, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      color: #38bdf8;
+      padding: 16px 32px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-hero-zoom:hover {
+      background: #0284c7;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
+    }
+
+    .btn-ticket-rsvp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      color: #34d399;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ticket-rsvp:hover {
+      background: #10b981;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
     /* COUNTDOWN SECTION */
     .countdown-container {
       background: rgba(15, 23, 42, 0.85);
@@ -989,6 +1065,22 @@
             <div class="countdown-label">Detik</div>
           </div>
         </div>
+      </div>
+
+      <!-- CENTERED HERO CTA BUTTONS -->
+      <div class="hero-cta-group">
+        <a href="#rsvp" class="btn-hero-rsvp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Konfirmasi Hadir (RSVP)</span>
+        </a>
+        <a href="https://zoom.us/j/89234729188?pwd=PROXSISCONNECT2026" target="_blank" class="btn-hero-zoom">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4.5 4.5A2.5 2.5 0 0 0 2 7v10a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5v-2.2l4.2 2.8A1 1 0 0 0 22 17V7a1 1 0 0 0-1.8-.6L16 9.2V7A2.5 2.5 0 0 0 13.5 4.5h-9z"/>
+          </svg>
+          <span>Masuk Ruang Zoom</span>
+        </a>
       </div>
     </header>
 
