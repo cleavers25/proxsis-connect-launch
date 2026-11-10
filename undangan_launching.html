@@ -311,6 +311,59 @@
       transform: translateY(-2px);
     }
 
+    /* PRESET PILLS SELECTOR */
+    .preset-links-container {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .preset-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .preset-pills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .preset-pill {
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #e2e8f0;
+      padding: 9px 18px;
+      border-radius: 100px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preset-pill:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      transform: translateY(-1px);
+    }
+
+    .preset-pill.active {
+      background: linear-gradient(135deg, #0284c7, #6366f1);
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+    }
+
     /* COUNTDOWN SECTION */
     .countdown-container {
       background: rgba(15, 23, 42, 0.85);
@@ -1168,12 +1221,24 @@
         <h3>Tautan Link Undangan Khusus Peserta</h3>
       </div>
       <p class="generator-desc">
-        Kustomisasi nama Bung/Jeng atau Rekan Partner untuk menghasilkan tautan undangan personal yang dapat langsung dibagikan:
+        Pilih cepat nama penerima undangan di bawah ini untuk menghasilkan tautan khusus dan pesan WhatsApp resmi siap kirim:
       </p>
 
+      <!-- 5 PRESETS: PAK RUDI, PAK YUMEI, PAK ADIT, PAK RONI, BUNG & JENG -->
+      <div class="preset-links-container">
+        <span class="preset-label">Pilih Cepat Nama Penerima:</span>
+        <div class="preset-pills-list">
+          <button type="button" class="preset-pill active" data-key="bungjeng" onclick="applyPreset('bungjeng')">👥 Bung & Jeng (All)</button>
+          <button type="button" class="preset-pill" data-key="rudi" onclick="applyPreset('rudi')">👔 Pak Rudi</button>
+          <button type="button" class="preset-pill" data-key="yumei" onclick="applyPreset('yumei')">👔 Pak Yumei</button>
+          <button type="button" class="preset-pill" data-key="adit" onclick="applyPreset('adit')">👔 Pak Adit</button>
+          <button type="button" class="preset-pill" data-key="roni" onclick="applyPreset('roni')">👔 Pak Roni</button>
+        </div>
+      </div>
+
       <div class="input-row">
-        <input type="text" id="inputGuestName" class="form-control-input" placeholder="Nama / Panggilan (cth: Bung Dimas / Jeng Sarah / Rekan Partner)">
-        <input type="text" id="inputGuestTitle" class="form-control-input" placeholder="Unit Bisnis / Organisasi (cth: Proxsis Biztech / Partner Tech)">
+        <input type="text" id="inputGuestName" class="form-control-input" placeholder="Nama / Panggilan (cth: Pak Rudi / Bung Dimas)">
+        <input type="text" id="inputGuestTitle" class="form-control-input" placeholder="Unit Bisnis / Organisasi (cth: Leader Proxsis Group)">
         <button class="btn-update-pass" onclick="updatePersonalizedLink()">Perbarui Link</button>
       </div>
 
@@ -1359,16 +1424,116 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // 2. PARSE QUERY PARAMS TO PERSONALIZE INVITATION
+    // 2. PRESETS CONFIGURATION & DETECTOR
+    const PRESETS = {
+      bungjeng: {
+        name: "Yth. Bung & Jeng serta Rekan Partner Proxsis",
+        title: "Seluruh Insan Proxsis Group & Strategic Partners",
+        shortName: "Bung & Jeng serta Rekan Partner",
+        slug: "bung-jeng"
+      },
+      rudi: {
+        name: "Yth. Pak Rudi",
+        title: "Leader & Manajemen Proxsis Group",
+        shortName: "Pak Rudi",
+        slug: "rudi"
+      },
+      yumei: {
+        name: "Yth. Pak Yumei",
+        title: "Leader & Manajemen Proxsis Group",
+        shortName: "Pak Yumei",
+        slug: "yumei"
+      },
+      adit: {
+        name: "Yth. Pak Adit",
+        title: "Leader & Manajemen Proxsis Group",
+        shortName: "Pak Adit",
+        slug: "adit"
+      },
+      roni: {
+        name: "Yth. Pak Roni",
+        title: "Leader & Manajemen Proxsis Group",
+        shortName: "Pak Roni",
+        slug: "roni"
+      }
+    };
+
+    function applyPreset(key, triggerToast = true) {
+      const p = PRESETS[key];
+      if (!p) return;
+
+      document.getElementById("inputGuestName").value = p.name;
+      document.getElementById("inputGuestTitle").value = p.title;
+      document.getElementById("displayGuestName").innerText = p.name;
+      document.getElementById("displayGuestTitle").innerText = p.title;
+      document.getElementById("rsvpName").value = p.shortName;
+      document.getElementById("rsvpRole").value = p.title;
+
+      document.querySelectorAll(".preset-pill").forEach(el => el.classList.remove("active"));
+      const btn = document.querySelector(`.preset-pill[data-key="${key}"]`);
+      if (btn) btn.classList.add("active");
+
+      const origin = window.location.origin;
+      let targetUrl = "";
+      if (key === "bungjeng") {
+        targetUrl = origin + "/";
+      } else {
+        targetUrl = origin + "/" + p.slug;
+      }
+
+      document.getElementById("personalizedUrlDisplay").innerText = targetUrl;
+
+      // Sapaan WhatsApp yang dipersonalisasi
+      const waText = `*UNDANGAN RESMI PELUNCURAN PROXSIS CONNECT*\n\n` +
+        `Halo ${p.name} 👋\n\n` +
+        `Kami mengundang Bapak/Rekan untuk hadir dalam sesi peluncuran resmi platform *Proxsis Connect (Powered by Coolify)*:\n\n` +
+        `🗓 *Rabu, 11 November 2026*\n` +
+        `⏰ *09.30 - 11.00 WIB*\n` +
+        `💻 *Via Zoom Virtual Meeting*\n\n` +
+        `Akses tautan undangan khusus & ruang Zoom:\n` +
+        `${targetUrl}\n\n` +
+        `_See it built. See it deployed._\n` +
+        `Sampai jumpa besok di ruang Zoom! 🚀\n\n` +
+        `Salam hangat,\n` +
+        `Tim Cloud & AI Infra Proxsis`;
+
+      document.getElementById("waShareBtn").href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(waText);
+      if (triggerToast) {
+        showToast(`✓ Undangan untuk ${p.shortName} siap dibagikan!`);
+      }
+    }
+
+    // 3. PARSE QUERY PARAMS OR PATH
     function checkUrlParams() {
       const urlParams = new URLSearchParams(window.location.search);
+      const presetParam = (urlParams.get('p') || urlParams.get('preset') || '').toLowerCase();
       const guestName = urlParams.get('to') || urlParams.get('name');
       const guestTitle = urlParams.get('title') || urlParams.get('role');
+
+      // Check path
+      const pathname = window.location.pathname.toLowerCase();
+      if (pathname.includes('/rudi') || presetParam === 'rudi') {
+        applyPreset('rudi', false);
+        return;
+      } else if (pathname.includes('/yumei') || presetParam === 'yumei') {
+        applyPreset('yumei', false);
+        return;
+      } else if (pathname.includes('/adit') || presetParam === 'adit') {
+        applyPreset('adit', false);
+        return;
+      } else if (pathname.includes('/roni') || presetParam === 'roni') {
+        applyPreset('roni', false);
+        return;
+      } else if (pathname.includes('/bung-jeng') || presetParam === 'bungjeng' || presetParam === 'all') {
+        applyPreset('bungjeng', false);
+        return;
+      }
 
       if (guestName) {
         document.getElementById("displayGuestName").innerText = guestName;
         document.getElementById("inputGuestName").value = guestName;
         document.getElementById("rsvpName").value = guestName;
+        document.querySelectorAll(".preset-pill").forEach(el => el.classList.remove("active"));
       }
       if (guestTitle) {
         document.getElementById("displayGuestTitle").innerText = guestTitle;
@@ -1379,7 +1544,7 @@
       updatePersonalizedLinkUI();
     }
 
-    // 3. UPDATE PERSONALIZED LINK
+    // 4. UPDATE PERSONALIZED LINK FROM MANUAL INPUT
     function updatePersonalizedLink() {
       const name = document.getElementById("inputGuestName").value.trim();
       const title = document.getElementById("inputGuestTitle").value.trim();
@@ -1393,6 +1558,7 @@
         document.getElementById("rsvpRole").value = title;
       }
 
+      document.querySelectorAll(".preset-pill").forEach(el => el.classList.remove("active"));
       updatePersonalizedLinkUI();
       showToast("Kartu Undangan & Tautan berhasil diperbarui!");
     }
@@ -1406,15 +1572,14 @@
 
       document.getElementById("personalizedUrlDisplay").innerText = personalizedUrl;
 
-      // WhatsApp share link formatted with Proxsis style (Bung & Jeng & Partner)
+      // WhatsApp share link
       const waText = `*UNDANGAN RESMI PELUNCURAN PROXSIS CONNECT*\n\n` +
-        `Halo Bung & Jeng serta Rekan Partner Proxsis! 👋\n\n` +
-        `Yth. *${name}* (${title}),\n\n` +
-        `Kami mengundang Bung/Jeng dan Rekan Partner untuk hadir dalam sesi peluncuran resmi platform *Proxsis Connect (Powered by Coolify)*:\n\n` +
+        `Halo ${name}! 👋\n\n` +
+        `Kami mengundang Bapak/Ibu/Rekan untuk hadir dalam sesi peluncuran resmi platform *Proxsis Connect (Powered by Coolify)*:\n\n` +
         `🗓 *Rabu, 11 November 2026*\n` +
         `⏰ *09.30 - 11.00 WIB*\n` +
         `💻 *Via Zoom Virtual Meeting*\n\n` +
-        `Akses tautan undangan resmi & ruang Zoom:\n` +
+        `Akses tautan undangan khusus & ruang Zoom:\n` +
         `${personalizedUrl}\n\n` +
         `_See it built. See it deployed._\n` +
         `Sampai jumpa besok di ruang Zoom! 🚀\n\n` +
