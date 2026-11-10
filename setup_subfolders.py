@@ -13,31 +13,36 @@ subfolders = {
         "key": "rudi",
         "name": "Yth. Pak Rudi",
         "title": "Komisaris Proxsis Group",
-        "short": "Pak Rudi"
+        "short": "Pak Rudi",
+        "unit": "Proxsis Group"
     },
     "yumei": {
         "key": "yumei",
         "name": "Yth. Pak Yumei",
         "title": "Komisaris Proxsis Group",
-        "short": "Pak Yumei"
+        "short": "Pak Yumei",
+        "unit": "Proxsis Group"
     },
     "adit": {
         "key": "adit",
         "name": "Yth. Pak Adit",
         "title": "Presiden Direktur Proxsis Group",
-        "short": "Pak Adit"
+        "short": "Pak Adit",
+        "unit": "Proxsis Group"
     },
     "roni": {
         "key": "roni",
         "name": "Yth. Pak Roni",
         "title": "Komisaris Proxsis Group",
-        "short": "Pak Roni"
+        "short": "Pak Roni",
+        "unit": "Proxsis Group"
     },
     "bung-jeng": {
         "key": "bungjeng",
         "name": "Yth. Bung & Jeng serta Rekan Partner Proxsis",
         "title": "Seluruh Insan Proxsis Group & Strategic Partners",
-        "short": "Bung & Jeng"
+        "short": "Bung & Jeng",
+        "unit": ""
     }
 }
 
@@ -58,7 +63,15 @@ for folder, data in subfolders.items():
     ).replace(
         '<input type="text" id="rsvpRole" class="form-input" required placeholder="cth: Developer / Consultant / PM / Partner">',
         f'<input type="text" id="rsvpRole" class="form-input" required value="{data["title"]}">'
-    ).replace(
+    )
+    
+    if data["unit"]:
+        custom_content = custom_content.replace(
+            '<input type="text" id="rsvpUnit" class="form-input" required placeholder="cth: Proxsis Biztech / Partner / Nama Instansi">',
+            f'<input type="text" id="rsvpUnit" class="form-input" required value="{data["unit"]}">'
+        )
+    
+    custom_content = custom_content.replace(
         "window.onload = checkUrlParams;",
         f"window.onload = function() {{ applyPreset('{data['key']}', false); }};"
     )
