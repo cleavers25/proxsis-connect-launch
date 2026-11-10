@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Panduan Singkat Coolify — Proxsis Group</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+  @page {
+    size: 1920px 1080px;
+    margin: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #0b0f19;
+    color: #f8fafc;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .slide {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+    background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.12) 0%, transparent 50%),
+                #0b0f19;
+    padding: 64px 88px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .slide.cover {
+    background: radial-gradient(circle at 50% 35%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.18) 0%, transparent 50%),
+                #070a12;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* HEADER */
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 18px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: rgba(99, 102, 241, 0.18);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+  }
+
+  .pill.emerald {
+    background: rgba(16, 185, 129, 0.18);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+
+  .pill.amber {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fcd34d;
+    border-color: rgba(245, 158, 11, 0.35);
+  }
+
+  .slide-title {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-top: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .slide-subtitle {
+    font-size: 20px;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+
+  /* FOOTER */
+  .slide-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 16px;
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  .slide-number {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 6px 16px;
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-weight: 700;
+  }
+
+  /* GRIDS & CARDS */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+
+  .card {
+    background: rgba(30, 41, 59, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    padding: 28px 32px;
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45);
+  }
+
+  .card.highlight {
+    border-color: rgba(99, 102, 241, 0.45);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(30, 41, 59, 0.65) 100%);
+  }
+
+  .card.success {
+    border-color: rgba(16, 185, 129, 0.45);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.10) 0%, rgba(30, 41, 59, 0.65) 100%);
+  }
+
+  .card-icon {
+    font-size: 38px;
+  }
+
+  .card-h {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .card-p {
+    font-size: 16px;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+
+  .num-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+  }
+
+  .code-snip {
+    background: #060911;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #38bdf8;
+    line-height: 1.6;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 16px;
+    color: #e2e8f0;
+    line-height: 1.5;
+  }
+
+  .check-icon {
+    color: #34d399;
+    font-weight: 800;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER (SIMPLE) -->
+<div class="slide cover">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 24px; max-width: 1100px;">
+    <div style="display: flex; gap: 12px;">
+      <span class="pill emerald">PROXSIS GROUP</span>
+      <span class="pill">QUICK GUIDE</span>
+    </div>
+
+    <h1 style="font-size: 68px; font-weight: 800; line-height: 1.15; letter-spacing: -1.5px;">
+      Panduan Singkat Coolify<br>
+      <span style="background: linear-gradient(135deg, #818cf8 0%, #38bdf8 50%, #34d399 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Deployment Otomatis Berbasis AI
+      </span>
+    </h1>
+
+    <p style="font-size: 24px; color: #94a3b8; max-width: 850px; line-height: 1.5;">
+      Platform PaaS internal untuk hosting aplikasi mandiri, cepat, hemat biaya, dan terintegrasi langsung dengan AI coding agent.
+    </p>
+
+    <div style="margin-top: 24px; display: flex; gap: 32px; background: rgba(30, 41, 59, 0.5); padding: 18px 36px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+      <div>
+        <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase;">Portal URL</div>
+        <div style="font-size: 18px; color: #38bdf8; font-weight: 700;">connect.proxsis.com</div>
+      </div>
+      <div style="width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+      <div>
+        <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase;">Infrastruktur</div>
+        <div style="font-size: 18px; color: #f8fafc; font-weight: 600;">Sitkrop Infra (192.168.10.21)</div>
+      </div>
+      <div style="width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+      <div>
+        <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase;">Tool Rekomendasi</div>
+        <div style="font-size: 18px; color: #a5b4fc; font-weight: 600;">Google Antigravity & Claude Code</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: MENGAPA COOLIFY (SIMPLE) -->
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <span class="pill">01 • LATAR BELAKANG & KEUNGGULAN</span>
+      <h2 class="slide-title">Mengapa Memilih Coolify?</h2>
+      <p class="slide-subtitle">Solusi cerdas menggantikan deployment manual & menghemat biaya cloud</p>
+    </div>
+    <div class="slide-number">02 / 06</div>
+  </div>
+
+  <div class="grid-3" style="margin: auto 0;">
+    <div class="card highlight">
+      <div class="card-icon">💰</div>
+      <div class="card-h">Hemat Biaya 100%</div>
+      <div class="card-p">
+        Berjalan di server VM private Proxsis (on-premise). Tidak ada biaya sewa dyno bulanan seperti Heroku ($7–$25/app) atau tagihan tak terduga AWS.
+      </div>
+    </div>
+
+    <div class="card success">
+      <div class="card-icon">⚡</div>
+      <div class="card-h">Otomatis Tanpa Ribet</div>
+      <div class="card-p">
+        Tidak perlu utak-atik Nginx, Caddyfile, atau SSL manual. Coolify otomatis mengatur sertifikat HTTPS dan domain <code>*.connect.proxsis.com</code>.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <div class="card-h">Siap untuk AI Agent</div>
+      <div class="card-p">
+        Memiliki REST API yang matang. Cukup berbicara dengan AI Agent (Antigravity/Claude Code), aplikasi langsung terdeploy tanpa menyentuh terminal server.
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>PROXSIS GROUP • CLOUD & AI INFRASTRUCTURE</div>
+    <div>Keunggulan Utama Coolify Dibanding Tools Lain</div>
+  </div>
+</div>
+
+<!-- SLIDE 3: CARA BUAT AKUN & LOGIN (SIMPLE) -->
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <span class="pill">02 • CARA AKSES & LOGIN</span>
+      <h2 class="slide-title">Cara Buat Akun & Login</h2>
+      <p class="slide-subtitle">3 langkah sederhana untuk mulai menggunakan platform</p>
+    </div>
+    <div class="slide-number">03 / 06</div>
+  </div>
+
+  <div class="grid-3" style="margin: auto 0;">
+    <div class="card">
+      <div class="num-badge">1</div>
+      <div class="card-h">Buka Portal & Daftar</div>
+      <div class="card-p">
+        Akses <strong>https://connect.proxsis.com</strong>.<br><br>
+        Klik <em>Register</em> atau buka link undangan email resmi kerja (<code>@proxsis.com</code> / <code>@proxsisgroup.com</code>).
+      </div>
+    </div>
+
+    <div class="card highlight">
+      <div class="num-badge">2</div>
+      <div class="card-h">Pilih Team & Project</div>
+      <div class="card-p">
+        Setelah login, pilih <strong>Workspace / Team</strong> divisi Anda (misal: <em>Biztech, Infra, R&D</em>).<br><br>
+        Role pengguna diset sebagai <strong>Developer</strong> untuk hak membuat dan mengelola aplikasi.
+      </div>
+    </div>
+
+    <div class="card success">
+      <div class="num-badge">3</div>
+      <div class="card-h">Ambil API Token</div>
+      <div class="card-p">
+        Masuk menu <strong>Profile → API Tokens</strong>.<br><br>
+        Buat token baru untuk menghubungkan AI Agent Anda (simpan string token untuk konfigurasi local).
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>PROXSIS GROUP • CLOUD & AI INFRASTRUCTURE</div>
+    <div>Registrasi, Hak Akses, & Pembuatan Token API</div>
+  </div>
+</div>
+
+<!-- SLIDE 4: DEPLOY DENGAN AI (SIMPLE) -->
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <span class="pill emerald">03 • OTOMASI AI AGENT</span>
+      <h2 class="slide-title">Cara Deploy Aplikasi dengan AI</h2>
+      <p class="slide-subtitle">Satu perintah percakapan, aplikasi langsung online</p>
+    </div>
+    <div class="slide-number">04 / 06</div>
+  </div>
+
+  <div class="grid-2" style="margin: auto 0;">
+    <div class="card highlight">
+      <div class="card-h" style="display: flex; align-items: center; gap: 10px;">
+        <span>💬</span> Cukup Ketik di Chat AI:
+      </div>
+      <div class="code-snip" style="font-size: 15px; color: #f8fafc; border-color: rgba(99, 102, 241, 0.4);">
+        <span style="color: #818cf8;">User ></span> "Deploy proyek landing page ini ke Coolify dengan nama subdomain <strong>biztech-fahima-portal</strong>"
+      </div>
+
+      <div class="card-p" style="margin-top: 8px;">
+        <strong>Tool yang Didukung Penuh (Tier 1):</strong><br>
+        • <strong>Google Antigravity</strong> (Rekomendasi Utama internal)<br>
+        • <strong>Claude Code CLI</strong> (Jalankan via terminal laptop)<br>
+        • <em>Catatan:</em> Claude Desktop GUI polosan dialihkan ke Claude Code CLI karena butuh izin akses terminal.
+      </div>
+    </div>
+
+    <div class="card success">
+      <div class="card-h" style="display: flex; align-items: center; gap: 10px;">
+        <span>⚡</span> Yang Terjadi Secara Otomatis:
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="check-item"><span class="check-icon">✓</span> AI membaca token dari file <code>AI_DEPLOYMENT_CONFIG.md</code></div>
+        <div class="check-item"><span class="check-icon">✓</span> AI melakukan auto-push repository kode ke GitHub</div>
+        <div class="check-item"><span class="check-icon">✓</span> Mendaftarkan app ke server <strong>Sitkrop Infra (192.168.10.21)</strong></div>
+        <div class="check-item"><span class="check-icon">✓</span> Pasang domain & SSL: <code>https://biztech-fahima-portal.connect.proxsis.com</code></div>
+        <div class="check-item"><span class="check-icon">✓</span> <strong>Selesai dalam &lt; 90 detik!</strong> Siap diakses publik.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>PROXSIS GROUP • CLOUD & AI INFRASTRUCTURE</div>
+    <div>Alur Kerja Deployment Otomatis Berbasis AI Agent</div>
+  </div>
+</div>
+
+<!-- SLIDE 5: MAINTENANCE TIM INFRA (SIMPLE) -->
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <span class="pill amber">04 • OPERASIONAL INFRA</span>
+      <h2 class="slide-title">Maintenance Coolify oleh Tim Infra</h2>
+      <p class="slide-subtitle">4 pilar utama pemeliharaan server agar sistem selalu stabil</p>
+    </div>
+    <div class="slide-number">05 / 06</div>
+  </div>
+
+  <div class="grid-4" style="margin: auto 0;">
+    <div class="card highlight">
+      <div class="card-icon">🧹</div>
+      <div class="card-h" style="font-size: 20px;">1. Auto-Prune Docker</div>
+      <div class="card-p" style="font-size: 14px;">
+        Jadwalkan cron job pembersih image dan builder cache gantung:
+      </div>
+      <div class="code-snip" style="font-size: 11px; padding: 10px;">
+        docker image prune -af --filter "until=72h"<br>
+        docker builder prune -af
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">💾</div>
+      <div class="card-h" style="font-size: 20px;">2. Backup Rutin</div>
+      <div class="card-p" style="font-size: 14px;">
+        Snapshot harian direktori internal Coolify dan seluruh persistent storage:
+      </div>
+      <div class="code-snip" style="font-size: 11px; padding: 10px;">
+        /data/coolify/<br>
+        DB Dump harian ke S3
+      </div>
+    </div>
+
+    <div class="card success">
+      <div class="card-icon">🔄</div>
+      <div class="card-h" style="font-size: 20px;">3. Update Versi</div>
+      <div class="card-p" style="font-size: 14px;">
+        Pembaruan versi core Coolify secara aman tanpa downtime kontainer:
+      </div>
+      <div class="code-snip" style="font-size: 11px; padding: 10px;">
+        curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-h" style="font-size: 20px;">4. Monitoring Resource</div>
+      <div class="card-p" style="font-size: 14px;">
+        Pantau RAM & disk Proxmox VM (192.168.10.21). Pastikan disk di bawah 80% & batas memory per app 512MB–1GB.
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>PROXSIS GROUP • CLOUD & AI INFRASTRUCTURE</div>
+    <div>SOP Perawatan & Operasional Server oleh Tim Infra</div>
+  </div>
+</div>
+
+<!-- SLIDE 6: RINGKASAN & ATURAN PENTING (SIMPLE) -->
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <span class="pill emerald">05 • REKAPITULASI & GUARDRAILS</span>
+      <h2 class="slide-title">Aturan Main & Kontak Tim Infra</h2>
+      <p class="slide-subtitle">Panduan cepat agar deployment lancar dan server tetap sehat</p>
+    </div>
+    <div class="slide-number">06 / 06</div>
+  </div>
+
+  <div class="grid-2" style="margin: auto 0;">
+    <div class="card" style="border-left: 5px solid #0284c7;">
+      <div class="card-h">📌 3 Aturan Wajib Pengguna</div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="check-item">
+          <span class="check-icon" style="color: #0284c7;">1.</span>
+          <div><strong>Format Subdomain:</strong> Wajib <code>https://[divisi]-[nama]-[proyek].connect.proxsis.com</code> agar tidak tabrakan antar tim.</div>
+        </div>
+        <div class="check-item">
+          <span class="check-icon" style="color: #0284c7;">2.</span>
+          <div><strong>Target Server:</strong> Selalu deploy ke <strong>Sitkrop Infra (192.168.10.21)</strong>, jangan ke Host Utama.</div>
+        </div>
+        <div class="check-item">
+          <span class="check-icon" style="color: #0284c7;">3.</span>
+          <div><strong>Jaga Token:</strong> Jangan pernah push token Coolify atau GitHub ke public repository.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card highlight" style="justify-content: center; text-align: center; gap: 18px;">
+      <div style="font-size: 32px;">🚀</div>
+      <div class="card-h" style="font-size: 28px;">Siap untuk Mulai?</div>
+      <div class="card-p" style="font-size: 18px;">
+        Kunjungi portal Coolify sekarang di:<br>
+        <span style="color: #38bdf8; font-weight: 700; font-family: 'JetBrains Mono';">https://connect.proxsis.com</span>
+      </div>
+      <div style="font-size: 14px; color: #94a3b8; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 14px;">
+        Bantuan & Onboarding: <strong>Tim Cloud & AI Infra Proxsis</strong> (Mas Ulul & Rn)
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>PROXSIS GROUP • CLOUD & AI INFRASTRUCTURE</div>
+    <div>Selesai • Siap Digunakan untuk Sosialisasi Cepat</div>
+  </div>
+</div>
+
+</body>
+</html>

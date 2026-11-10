@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920, initial-scale=1.0">
+<title>Poster Countdown Coolify - Proxsis Connect (Story 9:16)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    width: 1080px;
+    height: 1920px;
+    background-color: #070913;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #f8fafc;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 100px 72px 90px 72px;
+  }
+
+  .bg-glow-top {
+    position: absolute;
+    top: -150px;
+    right: -100px;
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(139, 92, 246, 0.2) 45%, transparent 70%);
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-glow-bottom {
+    position: absolute;
+    bottom: -150px;
+    left: -100px;
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.35) 0%, transparent 75%);
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .cyber-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 40%, transparent 95%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 40%, transparent 95%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .content-layer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  .poster-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .brand-icon {
+    width: 54px;
+    height: 54px;
+    background: linear-gradient(135deg, #6366f1, #38bdf8);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.5);
+  }
+
+  .brand-icon svg { width: 30px; height: 30px; fill: #ffffff; }
+
+  .brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .brand-subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #94a3b8;
+    text-transform: uppercase;
+  }
+
+  .live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+  }
+
+  .live-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #34d399;
+  }
+
+  .live-text {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #34d399;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .countdown-hero {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px 0 20px 0;
+  }
+
+  .countdown-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 28px;
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid rgba(129, 140, 248, 0.45);
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .countdown-pill span {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #c7d2fe;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .countdown-headline {
+    font-size: 88px;
+    line-height: 1.02;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .gradient-text-fire {
+    background: linear-gradient(135deg, #ffffff 10%, #f1f5f9 40%, #38bdf8 70%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-text-accent {
+    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .teaser-quote {
+    font-size: 32px;
+    font-weight: 700;
+    color: #e2e8f0;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 32px;
+    border-radius: 100px;
+  }
+
+  .teaser-quote .highlight { color: #38bdf8; font-weight: 800; }
+
+  .pipeline-card {
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 28px;
+    padding: 32px;
+    backdrop-filter: blur(24px);
+    margin: 20px 0;
+  }
+
+  .terminal-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 24px;
+  }
+
+  .window-dots { display: flex; gap: 8px; }
+  .w-dot { width: 14px; height: 14px; border-radius: 50%; }
+  .w-dot.red { background: #ef4444; }
+  .w-dot.yellow { background: #f59e0b; }
+  .w-dot.green { background: #10b981; }
+
+  .terminal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: #38bdf8;
+    font-weight: 600;
+  }
+
+  .pipeline-steps-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .p-step {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 16px 20px;
+    border-radius: 16px;
+  }
+
+  .p-step.success { border-color: rgba(52, 211, 153, 0.4); }
+
+  .p-icon {
+    width: 32px;
+    height: 32px;
+    background: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .p-step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .p-step-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .p-step-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  .console-strip {
+    background: #090d16;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+  }
+
+  .copywriting-box {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+
+  .copy-headline {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .copy-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #cbd5e1;
+  }
+
+  .copy-body strong { color: #f8fafc; }
+
+  .poster-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: rgba(11, 15, 25, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 28px 32px;
+    backdrop-filter: blur(20px);
+  }
+
+  .footer-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .date-block { display: flex; align-items: center; gap: 18px; }
+
+  .date-calendar-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cal-month { font-size: 11px; font-weight: 800; color: #e0f2fe; }
+  .cal-day { font-size: 26px; font-weight: 900; color: #ffffff; line-height: 1; }
+
+  .date-main { font-size: 22px; font-weight: 800; color: #ffffff; }
+  .date-sub { font-size: 14px; color: #94a3b8; }
+
+  .portal-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    padding: 12px 24px;
+    border-radius: 100px;
+  }
+
+  .portal-pill span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: #38bdf8;
+  }
+
+  .footer-row-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #64748b;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow-top"></div>
+  <div class="bg-glow-bottom"></div>
+  <div class="cyber-grid"></div>
+
+  <div class="content-layer">
+    <header class="poster-header">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2.5s4 4 4 10.5c0 2.5-1.5 4.5-4 5.5-2.5-1-4-3-4-5.5 0-6.5 4-10.5 4-10.5z"/>
+            <path d="M5 13c-2 2-2 5-2 5s3 0 5-2"/>
+            <path d="M19 13c2 2 2 5 2 5s-3 0-5-2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Proxsis Connect</div>
+          <div class="brand-subtitle">Cloud PaaS • Powered by Coolify</div>
+        </div>
+      </div>
+      <div class="live-pill">
+        <div class="live-dot"></div>
+        <div class="live-text">Live Demo Soon</div>
+      </div>
+    </header>
+
+    <section class="countdown-hero">
+      <div class="countdown-pill">
+        <span>⏱️ Official Countdown</span>
+      </div>
+      <h1 class="countdown-headline">
+        <span class="gradient-text-fire">TOMORROW,</span><br>
+        <span class="gradient-text-accent">WE GO LIVE!</span>
+      </h1>
+      <div class="teaser-quote">
+        <span>“See it <span class="highlight">built</span>. See it <span class="highlight">deployed</span>.”</span>
+      </div>
+    </section>
+
+    <div class="pipeline-card">
+      <div class="terminal-topbar">
+        <div class="window-dots">
+          <div class="w-dot red"></div>
+          <div class="w-dot yellow"></div>
+          <div class="w-dot green"></div>
+        </div>
+        <div class="terminal-title">connect.proxsis.com</div>
+      </div>
+
+      <div class="pipeline-steps-vertical">
+        <div class="p-step success">
+          <div class="p-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="p-step-content">
+            <div class="p-step-title">01 • Source & Git Push</div>
+            <div class="p-step-desc">Otomasi build container dari repositori GitHub & GitLab</div>
+          </div>
+        </div>
+
+        <div class="p-step success">
+          <div class="p-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="p-step-content">
+            <div class="p-step-title">02 • Self-Hosted PaaS Engine</div>
+            <div class="p-step-desc">Isolasi aman di server VM on-premise Proxmox Proxsis</div>
+          </div>
+        </div>
+
+        <div class="p-step success">
+          <div class="p-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="p-step-content">
+            <div class="p-step-title">03 • Zero-Downtime Deployment</div>
+            <div class="p-step-desc">Instant SSL, custom sub-domain & monitoring aktif</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="console-strip">
+        <div style="display: flex; gap: 8px;">
+          <span style="color: #10b981;">$</span>
+          <span>coolify deploy --all</span>
+        </div>
+        <div style="color: #34d399; font-weight: 700;">LIVE IN PRODUCTION ✓</div>
+      </div>
+    </div>
+
+    <div class="copywriting-box">
+      <div class="copy-headline">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#38bdf8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span>Live Demonstration Walkthrough</span>
+      </div>
+      <p class="copy-body">
+        Besok, kita akan mengenal <strong>Proxsis Connect</strong> lebih dekat dan melihat langsung bagaimana aplikasi bisa di-deploy dari proses build sampai aplikasi siap diakses. <strong>Jangan lewatkan live demo-nya!</strong>
+      </p>
+    </div>
+
+    <footer class="poster-footer">
+      <div class="footer-row-top">
+        <div class="date-block">
+          <div class="date-calendar-icon">
+            <span class="cal-month">NOV</span>
+            <span class="cal-day">11</span>
+          </div>
+          <div class="date-details">
+            <div class="date-main">Rabu, 11 November 2026</div>
+            <div class="date-sub">Live Deployment Demo & Sosialisasi PaaS</div>
+          </div>
+        </div>
+
+        <div class="portal-pill">
+          <span>connect.proxsis.com</span>
+        </div>
+      </div>
+
+      <div class="footer-row-bottom">
+        <div>#ProxsisConnect #Coolify #LaunchDay</div>
+        <div>Proxsis Infrastructure & AI Ecosystem</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

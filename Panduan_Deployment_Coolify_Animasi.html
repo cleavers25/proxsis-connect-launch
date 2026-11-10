@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video & Panduan Animasi Deployment Coolify — Proxsis Group</title>
+<style>
+  :root {
+    --bg-dark: #0b0f19;
+    --card-bg: #0f172a;
+    --border: #1e293b;
+    --primary: #0284c7;
+    --primary-light: #38bdf8;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    padding: 24px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .logo-badge {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: white;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-light);
+  }
+
+  p.subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .video-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+  }
+
+  .video-header {
+    padding: 14px 20px;
+    background: #090d16;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .video-header h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  video {
+    width: 100%;
+    max-height: 640px;
+    display: block;
+    background: #000;
+  }
+
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .chapter-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .chapter-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-light);
+  }
+
+  .chapter-time {
+    display: inline-block;
+    background: #1e293b;
+    color: var(--primary-light);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-family: monospace;
+  }
+
+  .chapter-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+
+  .chapter-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .downloads-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .downloads-info h3 {
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+
+  .downloads-info p {
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+
+  .btn:hover {
+    background: #0369a1;
+  }
+
+  .btn-secondary {
+    background: #1e293b;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: #334155;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div>
+      <span class="logo-badge">PROXSIS MANAGED INFRASTRUCTURE</span>
+      <h1>Panduan Visual & Video Animasi Deployment Coolify</h1>
+      <p class="subtitle">Platform Otomasi Deployment Cepat, Wildcard Subdomain & Manajemen Multi-PT</p>
+    </div>
+    <div class="btn-group">
+      <a href="Panduan_Deployment_Coolify_Bergambar.pdf" class="btn" download>
+        📥 Unduh PDF Bergambar (20 Hal)
+      </a>
+      <a href="Panduan_Deployment_Coolify.pdf" class="btn btn-secondary" download>
+        📄 PDF Ringkas (Teks)
+      </a>
+    </div>
+  </header>
+
+  <!-- Video Player Section -->
+  <div class="video-card">
+    <div class="video-header">
+      <h2>🎬 Video Animasi Alur Deployment Coolify (Full HD 720p dengan Suara & Subtitle)</h2>
+      <span style="font-size: 12px; color: var(--success); font-weight: 700;">● Status: Offline Ready</span>
+    </div>
+    <video controls poster="" preload="auto">
+      <source src="Panduan_Deployment_Coolify_Animasi.mp4" type="video/mp4">
+      Browser Anda tidak mendukung pemutaran video langsung. Silakan buka file <code>Panduan_Deployment_Coolify_Animasi.mp4</code> menggunakan video player seperti VLC.
+    </video>
+  </div>
+
+  <!-- Chapters Timeline -->
+  <h2 style="font-size: 17px; margin-bottom: 14px; color: var(--primary-light);">📌 Daftar Bab & Garis Waktu Video</h2>
+  <div class="chapters-grid">
+    <div class="chapter-item">
+      <span class="chapter-time">00:00 - 00:06</span>
+      <div class="chapter-title">Bab 1: Pengenalan & Fitur Unggulan</div>
+      <div class="chapter-desc">Ringkasan keunggulan Coolify di Proxsis: otomatisasi AI Agent, wildcard proxy, dan sertifikat SSL instan.</div>
+    </div>
+
+    <div class="chapter-item">
+      <span class="chapter-time">00:06 - 00:22</span>
+      <div class="chapter-title">Bab 2: Arsitektur Jaringan Wildcard</div>
+      <div class="chapter-desc">Mengapa developer tidak perlu lagi mengedit Caddyfile secara manual. Aliran data dari Cloudflare hingga Traefik.</div>
+    </div>
+
+    <div class="chapter-item">
+      <span class="chapter-time">00:22 - 00:42</span>
+      <div class="chapter-title">Bab 3: 1-Klik Deploy via AI Agent</div>
+      <div class="chapter-desc">Cara mengisi token di AI_DEPLOYMENT_CONFIG.md dan memberikan perintah di chat untuk deployment instan.</div>
+    </div>
+
+    <div class="chapter-item">
+      <span class="chapter-time">00:42 - 01:14</span>
+      <div class="chapter-title">Bab 4: Panduan Langkah UI Dashboard</div>
+      <div class="chapter-desc">Walkthrough 27 tangkapan layar asli: membuat project, memilih repo, memantau log build, dan status Running.</div>
+    </div>
+
+    <div class="chapter-item">
+      <span class="chapter-time">01:14 - 01:24</span>
+      <div class="chapter-title">Bab 5: Strategi Multi-PT di 1 Server</div>
+      <div class="chapter-desc">Cara aman membagi server fisik untuk PT Proxsis dan PT Synergi menggunakan Project terpisah di Coolify.</div>
+    </div>
+
+    <div class="chapter-item">
+      <span class="chapter-time">01:24 - 01:32</span>
+      <div class="chapter-title">Bab 6: 2 Aturan Emas Deployment</div>
+      <div class="chapter-desc">Server wajib Sitkrop Infra (192.168.10.21) dan format subdomain wajib *.connect.proxsis.com.</div>
+    </div>
+  </div>
+
+  <!-- Downloads & Resources Card -->
+  <div class="downloads-card">
+    <div class="downloads-info">
+      <h3>Semua Berkas Tersedia Secara Lengkap di Folder Proyek</h3>
+      <p>File video MP4, dokumen PDF visual bergambar, dan file PDF ringkas dapat langsung digunakan atau dibagikan ke tim.</p>
+    </div>
+    <div class="btn-group">
+      <a href="Panduan_Deployment_Coolify_Animasi.mp4" class="btn" download>
+        📹 Unduh File Video (.mp4)
+      </a>
+      <a href="Panduan_Deployment_Coolify_Bergambar.pdf" class="btn btn-secondary" download>
+        📑 Unduh Edisi Bergambar (.pdf)
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

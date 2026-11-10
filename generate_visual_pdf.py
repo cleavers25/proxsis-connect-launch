@@ -1,0 +1,1009 @@
+import os
+import weasyprint
+
+html_content = """<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Panduan Visual Deployment Coolify — Proxsis Group</title>
+<style>
+  @page {
+    size: A4;
+    margin: 10mm 12mm 12mm 12mm;
+    @bottom-right {
+      content: "Halaman " counter(page) " dari " counter(pages);
+      font-size: 8pt;
+      color: #64748b;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    @bottom-left {
+      content: "Panduan Deployment Coolify (Edisi Visual) • Proxsis Biztech";
+      font-size: 8pt;
+      color: #64748b;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.4;
+    font-size: 8.5pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* COVER STYLING */
+  .cover {
+    page-break-after: always;
+    padding-top: 30px;
+    text-align: center;
+  }
+
+  .cover-pill {
+    display: inline-block;
+    background: #0284c7;
+    color: #ffffff;
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+  }
+
+  .cover h1 {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.25;
+    margin: 0 0 8px 0;
+  }
+
+  .cover h2 {
+    font-size: 10.5pt;
+    font-weight: 500;
+    color: #475569;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+  }
+
+  .cover-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: left;
+    max-width: 540px;
+    margin: 0 auto 16px auto;
+  }
+
+  .cover-box table { width: 100%; border-collapse: collapse; }
+  .cover-box td { padding: 4px 0; font-size: 8.5pt; }
+  .cover-box td.label { color: #64748b; width: 150px; font-weight: 600; }
+  .cover-box td.val { color: #0f172a; font-weight: 600; }
+
+  .cover-intro {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: left;
+    max-width: 540px;
+    margin: 0 auto;
+    font-size: 8.5pt;
+    color: #166534;
+    line-height: 1.45;
+  }
+
+  /* SECTION BREAK & HEADERS */
+  .section-break {
+    page-break-after: always;
+  }
+
+  .section-header-block {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    border-left: 5px solid #38bdf8;
+  }
+  .section-header-block h2 {
+    margin: 0 0 4px 0;
+    font-size: 13pt;
+    font-weight: 800;
+    color: #38bdf8;
+  }
+  .section-header-block p {
+    margin: 0;
+    font-size: 8.5pt;
+    color: #cbd5e1;
+  }
+
+  /* 2 STEPS PER PAGE CONTAINER */
+  .page-pair {
+    page-break-after: always;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .step-card {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px 14px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    margin-bottom: 8px;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 4px;
+  }
+
+  .step-badge {
+    background: #0284c7;
+    color: #ffffff;
+    font-size: 8pt;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 5px;
+    display: inline-block;
+  }
+
+  .phase-badge {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #0369a1;
+    background: #e0f2fe;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .step-title {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-left: 8px;
+  }
+
+  .step-action {
+    font-size: 8.5pt;
+    color: #0f172a;
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+
+  .step-explain {
+    font-size: 8pt;
+    color: #475569;
+    margin-bottom: 5px;
+    line-height: 1.35;
+  }
+
+  .step-img-frame {
+    text-align: center;
+    background: #0f172a;
+    border-radius: 6px;
+    padding: 3px;
+    margin: 4px 0;
+    border: 1px solid #334155;
+  }
+
+  .step-img-frame img {
+    max-width: 100%;
+    max-height: 74mm;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  .step-tips-box {
+    background: #f0fdf4;
+    border-left: 3px solid #22c55e;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 7.5pt;
+    color: #166534;
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  .card-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+
+  .card-box h3 {
+    margin: 0 0 6px 0;
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .rule-box {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 8pt;
+    color: #991b1b;
+  }
+
+  .rule-box strong { color: #b91c1c; }
+
+  .success-box {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 8pt;
+    color: #166534;
+  }
+
+  .diagram-container {
+    text-align: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
+  }
+
+  .diagram-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .code-block {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 7.5pt;
+    line-height: 1.45;
+    margin: 8px 0;
+    white-space: pre-wrap;
+  }
+
+  code {
+    background: #f1f5f9;
+    color: #0369a1;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 7.5pt;
+    border: 1px solid #e2e8f0;
+  }
+
+  table.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 8pt;
+  }
+  table.custom-table th {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  table.custom-table td {
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+  }
+  table.custom-table tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .trouble-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .trouble-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 10px;
+    background: #f8fafc;
+    font-size: 7.5pt;
+    line-height: 1.35;
+  }
+
+  .trouble-card strong {
+    color: #0f172a;
+    font-size: 8pt;
+    display: block;
+    margin-bottom: 3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HALAMAN 1: COVER -->
+<div class="cover">
+  <div class="cover-pill">COOLIFY PaaS • EDISI VISUAL BERGAMBAR LENGKAP</div>
+  <h1>PANDUAN VISUAL DEPLOYMENT COOLIFY</h1>
+  <h2>Otomatisasi AI Agent, Manajemen Token, 27 Langkah Dashboard & Arsitektur Multi-PT</h2>
+
+  <div class="cover-box">
+    <table>
+      <tr>
+        <td class="label">Panel Dashboard:</td>
+        <td class="val">https://connect.proxsis.com</td>
+      </tr>
+      <tr>
+        <td class="label">Target Server Wajib:</td>
+        <td class="val">Sitkrop Infra / Proxsis-Coolify (192.168.10.21)</td>
+      </tr>
+      <tr>
+        <td class="label">Wildcard Domain:</td>
+        <td class="val">*.connect.proxsis.com (Otomatis SSL & Routing)</td>
+      </tr>
+      <tr>
+        <td class="label">Reverse Proxy:</td>
+        <td class="val">Otomatis Terpusat (Bebas Edit Caddyfile Manual)</td>
+      </tr>
+      <tr>
+        <td class="label">Metode Deployment:</td>
+        <td class="val">1. AI Agent Otomatis &bull; 2. Manual UI Dashboard</td>
+      </tr>
+      <tr>
+        <td class="label">Tangkapan Layar:</td>
+        <td class="val">27 Screenshot Asli Resolusi Penuh + Diagram Alur</td>
+      </tr>
+      <tr>
+        <td class="label">Penerbit Dokumen:</td>
+        <td class="val">Tim IT Infrastructure & Biztech Proxsis Group (2026)</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="cover-intro">
+    <strong>Selamat Datang di Panduan Visual Deployment Coolify</strong><br>
+    Buku panduan ini merupakan edisi bergambar lengkap yang menyajikan seluruh alur deployment di Proxsis:
+    mulai dari arsitektur otomatis wildcard proxy, panduan 1-klik deploy menggunakan AI Agent, 
+    27 langkah bergambar via UI Dashboard Coolify, hingga strategi pembagian project & hak akses antar-PT 
+    agar server digunakan secara aman, efisien, dan tertata rapi.
+  </div>
+</div>
+
+<!-- HALAMAN 2: ARSITEKTUR JARINGAN & ATURAN EMAS -->
+<div class="section-break">
+  <div class="section-header-block">
+    <h2>BAB 1: ARSITEKTUR JARINGAN & ATURAN EMAS WILDCARD</h2>
+    <p>Memahami bagaimana sistem Cloudflare, Caddy Host, dan Coolify Traefik bekerja otomatis tanpa konfigurasi manual.</p>
+  </div>
+
+  <div class="card-box">
+    <h3>Kenapa Anda Bebas dari Mengubah Reverse Proxy Manual?</h3>
+    <p style="margin: 0; font-size: 8pt; color: #475569; line-height: 1.45;">
+      Di masa lalu, setiap kali membuat aplikasi web baru di VPS, developer harus melakukan SSH ke server utama dan mengedit file <code>/etc/caddy/Caddyfile</code> secara manual. Sekarang hal tersebut <strong>dilarang dan tidak diperlukan lagi</strong> karena jaringan Proxsis telah dipasangi konfigurasi <strong>Wildcard Reverse Proxy</strong> otomatis.
+    </p>
+  </div>
+
+  <!-- SVG DIAGRAM JARINGAN -->
+  <div class="diagram-container">
+    <svg width="680" height="150" viewBox="0 0 680 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- Box 1: Visitor -->
+      <rect x="10" y="35" width="105" height="80" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+      <text x="62" y="65" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Pengunjung</text>
+      <text x="62" y="85" fill="#94a3b8" font-size="8.5" text-anchor="middle" font-family="sans-serif">Web Browser</text>
+      <text x="62" y="100" fill="#38bdf8" font-size="8" text-anchor="middle" font-family="sans-serif">HTTPS Request</text>
+
+      <!-- Arrow 1 -->
+      <path d="M 120 75 L 148 75" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Box 2: Cloudflare -->
+      <rect x="150" y="30" width="115" height="90" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+      <text x="207" y="58" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Cloudflare</text>
+      <text x="207" y="78" fill="#fde68a" font-size="8" font-weight="bold" text-anchor="middle" font-family="sans-serif">*.connect.proxsis.com</text>
+      <text x="207" y="94" fill="#94a3b8" font-size="7.5" text-anchor="middle" font-family="sans-serif">DNS Wildcard + SSL</text>
+      <text x="207" y="108" fill="#94a3b8" font-size="7.5" text-anchor="middle" font-family="sans-serif">WAF & DDoS Shield</text>
+
+      <!-- Arrow 2 -->
+      <path d="M 270 75 L 298 75" stroke="#f59e0b" stroke-width="2"/>
+
+      <!-- Box 3: VPS Caddy Host -->
+      <rect x="300" y="30" width="115" height="90" rx="8" fill="#1e293b" stroke="#6366f1" stroke-width="2"/>
+      <text x="357" y="58" fill="#818cf8" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">VPS Caddy Host</text>
+      <text x="357" y="75" fill="#c7d2fe" font-size="8" font-weight="bold" text-anchor="middle" font-family="sans-serif">143.20.49.131</text>
+      <text x="357" y="93" fill="#94a3b8" font-size="7.5" text-anchor="middle" font-family="sans-serif">Wildcard Rule:</text>
+      <text x="357" y="107" fill="#818cf8" font-size="7" text-anchor="middle" font-family="sans-serif">proxy -&gt; 192.168.10.21</text>
+
+      <!-- Arrow 3 -->
+      <path d="M 420 75 L 448 75" stroke="#6366f1" stroke-width="2"/>
+
+      <!-- Box 4: Sitkrop Infra Coolify -->
+      <rect x="450" y="30" width="120" height="90" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+      <text x="510" y="55" fill="#34d399" font-size="10.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Sitkrop Infra</text>
+      <text x="510" y="72" fill="#6ee7b7" font-size="8" font-weight="bold" text-anchor="middle" font-family="sans-serif">192.168.10.21</text>
+      <text x="510" y="90" fill="#94a3b8" font-size="7.5" text-anchor="middle" font-family="sans-serif">Coolify Traefik</text>
+      <text x="510" y="105" fill="#34d399" font-size="7" text-anchor="middle" font-family="sans-serif">Auto-Route & SSL Hub</text>
+
+      <!-- Arrow 4 -->
+      <path d="M 575 75 L 598 75" stroke="#10b981" stroke-width="2"/>
+
+      <!-- Box 5: App Container -->
+      <rect x="600" y="35" width="70" height="80" rx="8" fill="#047857" stroke="#34d399" stroke-width="2"/>
+      <text x="635" y="68" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle" font-family="sans-serif">App</text>
+      <text x="635" y="85" fill="#d1fae5" font-size="8" text-anchor="middle" font-family="sans-serif">Docker</text>
+      <text x="635" y="100" fill="#ffffff" font-size="7.5" text-anchor="middle" font-family="sans-serif">Online!</text>
+    </svg>
+  </div>
+
+  <div class="success-box">
+    <strong>🌟 2 ATURAN EMAS DEPLOYMENT PROXSIS:</strong><br>
+    <strong>1. TARGET SERVER WAJIB:</strong> Selalu pilih server <code>Sitkrop Infra</code> (IP: <code>192.168.10.21</code> / UUID: <code>hb8pxcicfub6dvpmtjgfffyn</code>). JANGAN pernah mendeploy aplikasi ke VPS Host utama <code>143.20.49.131</code> karena Traefik tidak berada di sana.<br>
+    <strong>2. FORMAT DOMAIN WAJIB:</strong> Selalu gunakan domain dengan akhiran <code>.connect.proxsis.com</code>, contoh: <code>https://synergi.connect.proxsis.com</code>. Format ini langsung dikenali oleh DNS Cloudflare & Caddy tanpa perlu registrasi domain baru.
+  </div>
+
+  <div class="rule-box">
+    <strong>⚠️ APA YANG TIDAK BOLEH DILAKUKAN:</strong><br>
+    &bull; <strong>DILARANG</strong> mengedit <code>/etc/caddy/Caddyfile</code> di server host utama.<br>
+    &bull; <strong>DILARANG</strong> menggunakan port binding publik langsung (misal: <code>:8080</code>) tanpa melalui Traefik proxy.<br>
+    &bull; <strong>DILARANG</strong> menggunakan domain kustom di luar <code>*.connect.proxsis.com</code> tanpa koordinasi DNS dengan tim IT Biztech.
+  </div>
+</div>
+
+<!-- HALAMAN 3: SETUP TOKEN OTOMATIS -->
+<div class="section-break">
+  <div class="section-header-block">
+    <h2>BAB 2: SETUP TOKEN UNTUK DEPLOYMENT OTOMATIS (AI AGENT)</h2>
+    <p>Cukup konfigurasi 1 kali, selanjutnya AI Agent dapat mendeploy website hanya dari chat prompt.</p>
+  </div>
+
+  <div class="card-box">
+    <h3>Langkah 1: Mengambil Personal Access Token (PAT) di GitHub</h3>
+    <ol style="margin: 0; padding-left: 18px; font-size: 8pt; color: #334155; line-height: 1.5;">
+      <li>Buka <a href="https://github.com">github.com</a> dan login ke akun GitHub Anda.</li>
+      <li>Klik foto profil Anda di pojok kanan atas &rarr; pilih <strong>Settings</strong>.</li>
+      <li>Pada bilah menu sebelah kiri paling bawah, klik <strong>Developer settings</strong>.</li>
+      <li>Pilih menu <strong>Personal access tokens</strong> &rarr; klik <strong>Tokens (classic)</strong>.</li>
+      <li>Klik tombol <strong>Generate new token</strong> &rarr; pilih <strong>Generate new token (classic)</strong>.</li>
+      <li>Isi form:
+        <ul style="margin-top: 2px;">
+          <li><strong>Note:</strong> Masukkan nama, misal <code>Coolify Deploy Agent</code></li>
+          <li><strong>Expiration:</strong> Pilih 90 hari atau <em>No expiration</em></li>
+          <li><strong>Scopes:</strong> Centang pilihan <code>repo</code> (Full control of private repositories)</li>
+        </ul>
+      </li>
+      <li>Klik tombol hijau <strong>Generate token</strong> di bagian paling bawah.</li>
+      <li>Salin kode token yang muncul (berawalan <code>ghp_...</code>) dan simpan dengan aman.</li>
+    </ol>
+  </div>
+
+  <div class="card-box">
+    <h3>Langkah 2: Mengambil API Token di Dashboard Coolify</h3>
+    <ol style="margin: 0; padding-left: 18px; font-size: 8pt; color: #334155; line-height: 1.5;">
+      <li>Buka dashboard Coolify melalui link resmi: <code>https://connect.proxsis.com</code> lalu login.</li>
+      <li>Klik menu navigasi <strong>Keys & Tokens</strong> (atau klik avatar profil &rarr; <strong>API Tokens</strong>).</li>
+      <li>Klik tombol <strong>Create New Token</strong> atau <strong>Add New Token</strong>.</li>
+      <li>Beri nama token, misalnya: <code>AI Deployment Token</code>.</li>
+      <li>Pilih role/permission: <strong>Root</strong> atau <strong>Admin</strong>.</li>
+      <li>Klik tombol <strong>Create</strong>, lalu salin token yang muncul (berformat <code>3|...</code> atau <code>9|...</code>).</li>
+    </ol>
+  </div>
+
+  <div class="card-box">
+    <h3>Langkah 3: Menempelkan Token ke File <code>AI_DEPLOYMENT_CONFIG.md</code></h3>
+    <p style="margin: 0 0 6px 0; font-size: 8pt; color: #475569;">
+      Buka file <code>AI_DEPLOYMENT_CONFIG.md</code> di folder proyek Anda, lalu isi token pada baris berikut:
+    </p>
+    <div class="code-block"># 1. Masukkan GitHub Token Anda:
+GITHUB_TOKEN="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# 2. Masukkan Coolify API Token Anda:
+COOLIFY_TOKEN="9|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# 3. URL Repository GitHub (OPSIONAL - Boleh Dikosongkan):
+GIT_REPOSITORY=""</div>
+    <div class="step-tips-box">
+      🔒 <strong>Keamanan Terjamin:</strong> File <code>AI_DEPLOYMENT_CONFIG.md</code> sudah dimasukkan ke dalam <code>.gitignore</code>, sehingga token rahasia Anda tidak akan pernah terunggah ke repositori GitHub publik.
+    </div>
+  </div>
+</div>
+
+<!-- HALAMAN 4: EKSEKUSI PROMPT AI AGENT -->
+<div class="section-break">
+  <div class="section-header-block">
+    <h2>BAB 3: CONTOH PERINTAH CHAT KE AI AGENT</h2>
+    <p>Setelah token terpasang, cukup ketik satu kalimat perintah di chat untuk mendeploy.</p>
+  </div>
+
+  <div class="card-box">
+    <div style="display: flex; align-items: center; margin-bottom: 6px;">
+      <span class="step-badge" style="background: #2563eb;">SKENARIO 1</span>
+      <strong style="margin-left: 8px; font-size: 9pt; color: #0f172a;">Deploy Proyek dari Folder Lokal Saat Ini</strong>
+    </div>
+    <div class="code-block" style="background: #1e293b; color: #38bdf8;">“Tolong deploy website di folder ini ke Coolify.”</div>
+    <p style="margin: 4px 0 0 0; font-size: 8pt; color: #475569; line-height: 1.4;">
+      &rarr; <strong>Aksi Otomatis AI:</strong> AI Agent akan membuat repositori baru di GitHub akun Anda secara otomatis, melakukan <code>git commit</code> dan <code>git push</code>, mendaftarkan project di Coolify, mengatur subdomain unik, menjalankan build, dan mengembalikan link web yang sudah aktif.
+    </p>
+  </div>
+
+  <div class="card-box">
+    <div style="display: flex; align-items: center; margin-bottom: 6px;">
+      <span class="step-badge" style="background: #7c3aed;">SKENARIO 2</span>
+      <strong style="margin-left: 8px; font-size: 9pt; color: #0f172a;">Deploy dari Tautan Repository GitHub Langsung</strong>
+    </div>
+    <div class="code-block" style="background: #1e293b; color: #c084fc;">“Deploy project ini ke Coolify: https://github.com/Proxsis-Biztech/Sitkorp_Status.git”</div>
+    <p style="margin: 4px 0 0 0; font-size: 8pt; color: #475569; line-height: 1.4;">
+      &rarr; <strong>Aksi Otomatis AI:</strong> AI Agent langsung mengambil link repo tersebut, mendeteksi jenis aplikasi (Docker/Node/Static), mengarahkan target ke server <code>Sitkrop Infra</code>, dan mengeksekusi deployment.
+    </p>
+  </div>
+
+  <div class="card-box">
+    <div style="display: flex; align-items: center; margin-bottom: 6px;">
+      <span class="step-badge" style="background: #059669;">SKENARIO 3</span>
+      <strong style="margin-left: 8px; font-size: 9pt; color: #0f172a;">Deploy dengan Subdomain Tertentu Pilihan Anda</strong>
+    </div>
+    <div class="code-block" style="background: #1e293b; color: #6ee7b7;">“Deploy website ini ke Coolify dengan domain https://synergi.connect.proxsis.com”</div>
+    <p style="margin: 4px 0 0 0; font-size: 8pt; color: #475569; line-height: 1.4;">
+      &rarr; <strong>Aksi Otomatis AI:</strong> AI Agent akan langsung menyetel rute Traefik ke subdomain <code>synergi.connect.proxsis.com</code>, sehingga setelah build selesai website langsung bisa diakses publik dengan SSL aktif.
+    </p>
+  </div>
+
+  <!-- DIAGRAM FLOW AI AGENT -->
+  <div class="diagram-container" style="padding: 10px;">
+    <svg width="680" height="90" viewBox="0 0 680 90" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="130" height="50" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+      <text x="75" y="42" fill="#ffffff" font-size="9" font-weight="bold" text-anchor="middle" font-family="sans-serif">Prompt Pengguna</text>
+      <text x="75" y="56" fill="#38bdf8" font-size="7.5" text-anchor="middle" font-family="sans-serif">"Deploy ke Coolify"</text>
+
+      <path d="M 145 45 L 175 45" stroke="#38bdf8" stroke-width="2"/>
+
+      <rect x="180" y="20" width="130" height="50" rx="6" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+      <text x="245" y="42" fill="#ffffff" font-size="9" font-weight="bold" text-anchor="middle" font-family="sans-serif">AI Agent Otomasi</text>
+      <text x="245" y="56" fill="#818cf8" font-size="7.5" text-anchor="middle" font-family="sans-serif">Git Push & Coolify API</text>
+
+      <path d="M 315 45 L 345 45" stroke="#818cf8" stroke-width="2"/>
+
+      <rect x="350" y="20" width="140" height="50" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="420" y="42" fill="#ffffff" font-size="9" font-weight="bold" text-anchor="middle" font-family="sans-serif">Coolify Build Engine</text>
+      <text x="420" y="56" fill="#f59e0b" font-size="7.5" text-anchor="middle" font-family="sans-serif">Build Container di Sitkrop</text>
+
+      <path d="M 495 45 L 525 45" stroke="#10b981" stroke-width="2"/>
+
+      <rect x="530" y="20" width="140" height="50" rx="6" fill="#065f46" stroke="#34d399" stroke-width="1.5"/>
+      <text x="600" y="42" fill="#ffffff" font-size="9" font-weight="bold" text-anchor="middle" font-family="sans-serif">Web Online (HTTPS)</text>
+      <text x="600" y="56" fill="#d1fae5" font-size="7.5" text-anchor="middle" font-family="sans-serif">*.connect.proxsis.com</text>
+    </svg>
+  </div>
+</div>
+"""
+
+# Now append the 27 steps using screenshots from /home/cleavers/Deploy Coolify/
+steps_data = [
+    {
+        "num": "01",
+        "title": "Masuk ke Menu Projects & Klik '+ Add'",
+        "phase": "Fase 1: Project & Environment",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_142956.png",
+        "action": "Silakan buka dashboard Coolify melalui tautan <code>https://connect.proxsis.com</code>. Pada panel navigasi di sebelah kiri (bagian <strong>Workspace</strong>), pilih menu <strong>Projects</strong>, kemudian klik tombol <strong>+ Add</strong> di pojok kanan atas.",
+        "explain": "Menu Projects berfungsi sebagai wadah utama untuk mengelompokkan aplikasi, database, dan service yang saling terhubung agar terorganisir dengan rapi.",
+        "tip": "💡 Catatan: Pada halaman ini Anda juga dapat melihat daftar seluruh project yang telah terdaftar sebelumnya."
+    },
+    {
+        "num": "02",
+        "title": "Menentukan Nama Project",
+        "phase": "Fase 1: Project & Environment",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143128.png",
+        "action": "Silakan masukkan nama project yang akan dibuat pada kolom Name, kemudian klik tombol Continue.",
+        "explain": "Kolom Description bersifat opsional dan dapat diisi sesuai kebutuhan. Nama project ini berfungsi sebagai folder utama pengelompokan resource aplikasi.",
+        "tip": "💡 Catatan: Disarankan menggunakan penamaan yang jelas (misal: PT Synergi atau PT Proxsis) agar mudah dikenali rekan satu tim."
+    },
+    {
+        "num": "03",
+        "title": "Memilih Environment 'production'",
+        "phase": "Fase 1: Project & Environment",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143142.png",
+        "action": "Setelah project berhasil dibuat, silakan klik pada kartu environment default bernama production.",
+        "explain": "Setiap project memiliki environment default untuk memisahkan staging dan production. Anda dapat menambah environment lain seperti staging di kemudian hari.",
+        "tip": "💡 Catatan: Mengklik kartu ini akan membawa Anda ke dalam ruang kerja khusus untuk mengelola resource production."
+    },
+    {
+        "num": "04",
+        "title": "Menambahkan Resource 'Private Git Repository'",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143154.png",
+        "action": "Klik tombol + Add Resource, kemudian pada bagian Source Code silakan pilih opsi Private Git Repository (dengan ikon GitHub).",
+        "explain": "Pilihan ini digunakan untuk menghubungkan akun GitHub Anda ke sistem Coolify secara aman melalui integrasi resmi GitHub App.",
+        "tip": "💡 Catatan: Jika aplikasi Anda bersifat Open Source publik, Anda juga dapat memilih Public Repository."
+    },
+    {
+        "num": "05",
+        "title": "Memulai Integrasi GitHub App",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143339.png",
+        "action": "Pada halaman pilihan sumber repositori, klik tombol Add GitHub App Integration.",
+        "explain": "Integrasi ini memungkinkan Coolify melakukan sinkronisasi otomatis, menarik kode sumber, dan mendeteksi pembaruan branch secara otomatis.",
+        "tip": "💡 Catatan: Proses pembuatan GitHub App ini hanya perlu dilakukan satu kali saja untuk setiap akun GitHub."
+    },
+    {
+        "num": "06",
+        "title": "Konfirmasi Pembuatan GitHub App",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143433.png",
+        "action": "Pastikan parameter yang tampil sudah sesuai, lalu klik tombol biru bertuliskan Create GitHub App.",
+        "explain": "Coolify akan mempersiapkan URL callback dan kredensial webhook sementara sebelum mengarahkan Anda ke portal keamanan resmi GitHub.",
+        "tip": "💡 Catatan: Anda akan dialihkan secara otomatis ke situs github.com dalam tab baru atau halaman yang sama."
+    },
+    {
+        "num": "07",
+        "title": "Penamaan Identitas Integrasi di Coolify",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143447.png",
+        "action": "Masukkan nama pengenal integrasi pada kolom Name (misalnya: coolify-proxsis-deployer), lalu klik Continue.",
+        "explain": "Nama ini hanya digunakan sebagai label pembeda di dalam panel Coolify agar Anda mudah mengetahui akun GitHub mana yang terhubung.",
+        "tip": "💡 Catatan: Gunakan huruf kecil tanpa spasi (bisa menggunakan tanda hubung -)."
+    },
+    {
+        "num": "08",
+        "title": "Verifikasi Keamanan di GitHub (Sudo Mode)",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143455.png",
+        "action": "Jika GitHub meminta konfirmasi autentikasi (Sudo Mode), silakan masukkan kata sandi GitHub Anda atau konfirmasi via 2FA.",
+        "explain": "GitHub menerapkan standar keamanan tinggi ketika membuat aplikasi atau integrasi baru untuk melindungi akun Anda dari penyalahgunaan.",
+        "tip": "💡 Catatan: Anda juga bisa menyetujui prompt keamanan melalui notifikasi di aplikasi GitHub Mobile di ponsel Anda."
+    },
+    {
+        "num": "09",
+        "title": "Membuat GitHub App & Menentukan Nama Unik",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143543.png",
+        "action": "Tinjau konfigurasi yang telah diisi otomatis oleh Coolify di form GitHub, lalu klik tombol Create GitHub App for [Akun Anda].",
+        "explain": "GitHub App akan didaftarkan langsung di akun personal atau organisasi Anda dengan hak akses yang terisolasi dan aman.",
+        "tip": "💡 Catatan: Jika muncul pesan nama sudah terpakai, tambahkan angka atau inisial unik di belakang nama aplikasi."
+    },
+    {
+        "num": "10",
+        "title": "Selesaikan Instalasi Izin di Coolify",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143557.png",
+        "action": "Setelah dialihkan kembali ke Coolify, klik tombol Install GitHub App untuk memasang aplikasi ke repositori proyek.",
+        "explain": "Tahap instalasi ini memberikan otorisasi kepada Coolify untuk membaca repositori yang Anda tentukan secara spesifik.",
+        "tip": "💡 Catatan: Coolify tidak akan membaca repositori lain selain yang Anda pilih pada langkah berikutnya."
+    },
+    {
+        "num": "11",
+        "title": "Memilih Akses Repository di GitHub",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143611.png",
+        "action": "Pilih 'Only select repositories' lalu pilih repo yang ingin di-deploy, atau pilih 'All repositories'. Klik tombol hijau Save/Install.",
+        "explain": "Pilihan 'Only select repositories' sangat direkomendasikan demi menerapkan prinsip keamanan least-privilege (akses terbatas).",
+        "tip": "💡 Catatan: Anda selalu dapat menambah atau mengubah daftar repositori yang diizinkan kapan saja melalui menu Settings di GitHub."
+    },
+    {
+        "num": "12",
+        "title": "Status Terhubung (Connected Hijau)",
+        "phase": "Fase 2: Integrasi GitHub App",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143732.png",
+        "action": "Perhatikan badge status di sebelah nama integrasi. Pastikan telah berubah warna hijau dengan tulisan Connected.",
+        "explain": "Status hijau menandakan koneksi webhook dan token autentikasi antara GitHub dan Coolify telah aktif dan siap digunakan.",
+        "tip": "💡 Catatan: Integrasi GitHub App telah selesai sempurna. Kini Anda siap mendeploy aplikasi pertama!"
+    },
+    {
+        "num": "13",
+        "title": "Kembali ke Menu Projects",
+        "phase": "Fase 3: Tambah Resource",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143908.png",
+        "action": "Silakan klik kembali menu Projects pada bilah navigasi kiri, lalu pilih project yang telah Anda buat pada Langkah 2.",
+        "explain": "Kita akan masuk kembali ke dalam lingkup kerja project untuk menambahkan aplikasi dari repositori yang baru saja dihubungkan.",
+        "tip": "💡 Catatan: Anda dapat menggunakan shortcut navigasi di bagian atas (*breadcrumbs*) untuk berpindah menu dengan cepat."
+    },
+    {
+        "num": "14",
+        "title": "Membuka Environment 'production'",
+        "phase": "Fase 3: Tambah Resource",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143918.png",
+        "action": "Klik pada kartu environment production untuk membuka daftar resource aktif.",
+        "explain": "Setiap aplikasi yang baru dibuat akan ditempatkan di environment ini agar siap menerima traffic produksi.",
+        "tip": "💡 Catatan: Pastikan Anda berada di environment yang tepat sebelum menambahkan aplikasi baru."
+    },
+    {
+        "num": "15",
+        "title": "Tambahkan Resource Baru dari GitHub App",
+        "phase": "Fase 3: Tambah Resource",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143940.png",
+        "action": "Klik tombol + Add Resource, kemudian pilih opsi Private Repository (GitHub App).",
+        "explain": "Sekarang integrasi GitHub App sudah terdaftar di sistem Coolify, sehingga Anda dapat langsung memilih repositori dengan mudah.",
+        "tip": "💡 Catatan: Anda tidak perlu lagi memasukkan token atau kunci SSH manual."
+    },
+    {
+        "num": "16",
+        "title": "Memilih GitHub App yang Terdaftar",
+        "phase": "Fase 3: Tambah Resource",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_143948.png",
+        "action": "Klik pada kartu integrasi GitHub App yang telah berstatus hijau/aktif yang Anda buat sebelumnya.",
+        "explain": "Coolify akan mengambil daftar seluruh repositori yang diizinkan langsung dari API GitHub secara otomatis.",
+        "tip": "💡 Catatan: Daftar repositori akan dimuat dalam waktu 1-2 detik."
+    },
+    {
+        "num": "17",
+        "title": "Memilih Repository Aplikasi",
+        "phase": "Fase 3: Tambah Resource",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_144009.png",
+        "action": "Cari nama repositori proyek Anda pada daftar dropdown atau kolom pencarian, kemudian klik repositori tersebut.",
+        "explain": "Repositori ini adalah sumber kode yang akan di-clone, di-build menjadi container image, dan dijalankan di server Proxsis.",
+        "tip": "💡 Catatan: Jika repo belum muncul, pastikan Anda telah memberinya izin di GitHub pada Langkah 11."
+    },
+    {
+        "num": "18",
+        "title": "Menentukan Branch & Strategi Build",
+        "phase": "Fase 3: Tambah Resource",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_144020.png",
+        "action": "Pilih branch utama (misalnya: main atau master). Pada pilihan Build Pack, biarkan Nixpacks / Railpack default atau sesuaikan lalu klik Continue.",
+        "explain": "Branch ini adalah branch yang akan dipantau secara otomatis. Setiap ada git push baru ke branch ini, Coolify otomatis melakukan redeploy.",
+        "tip": "💡 Catatan: Coolify otomatis mendeteksi stack (Node.js, Next.js, Python, PHP, dll) tanpa memerlukan Dockerfile."
+    },
+    {
+        "num": "19",
+        "title": "Halaman Awal Konfigurasi Aplikasi",
+        "phase": "Fase 3: Konfigurasi Aplikasi",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_144033.png",
+        "action": "Anda akan diarahkan ke halaman detail konfigurasi aplikasi. Di sini ditampilkan parameter server target dan detail Git.",
+        "explain": "Secara default Coolify memberikan alamat domain acak (random domain) sebelum Anda menentukan nama subdomain kantor resmi.",
+        "tip": "💡 Catatan: Jangan terburu-buru mendeploy jika aplikasi Anda membutuhkan environment variables (.env)."
+    },
+    {
+        "num": "20",
+        "title": "Menyesuaikan Nama Aplikasi",
+        "phase": "Fase 3: Konfigurasi Aplikasi",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_144114.png",
+        "action": "Silakan sesuaikan kolom Name pada kartu aplikasi dengan nama sistem Anda (contoh: Website Synergi atau Status Portal), lalu klik Save.",
+        "explain": "Penamaan yang spesifik akan memudahkan identifikasi container dan pemantauan resource di dashboard monitoring.",
+        "tip": "💡 Catatan: Anda juga bisa mengisi kolom Description untuk mencatat fungsi atau penanggung jawab aplikasi."
+    },
+    {
+        "num": "21",
+        "title": "Menjalankan Deployment & Memantau Log",
+        "phase": "Fase 4: Build & Deployment",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_144213.png",
+        "action": "Klik tombol Deploy di pojok kanan atas. Layar konsol log akan terbuka dan menampilkan proses clone, build, serta instalasi dependency secara realtime.",
+        "explain": "Coolify mengunduh source code dari GitHub, mengisolasi container, memasang package yang diperlukan, dan menjalankan aplikasi.",
+        "tip": "💡 Catatan: Waktu build bervariasi antara 1-3 menit tergantung ukuran dependency dan framework aplikasi."
+    },
+    {
+        "num": "22",
+        "title": "Mengenal Menu Pengaturan Aplikasi",
+        "phase": "Fase 4: Monitoring",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_145438.png",
+        "action": "Tinjau tab menu di sebelah kiri: Configuration, Logs, Environment Variables, Storages, dan Backups.",
+        "explain": "Tab-tab ini menyediakan kontrol penuh untuk memantau log aplikasi secara langsung, mengubah variabel rahasia, atau mengatur persistent volume.",
+        "tip": "💡 Catatan: Jika build gagal, tab Logs adalah tempat pertama yang harus Anda periksa untuk melihat pesan error."
+    },
+    {
+        "num": "23",
+        "title": "Verifikasi Status Berhasil (Running Hijau)",
+        "phase": "Fase 4: Verifikasi Status",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_145454.png",
+        "action": "Perhatikan status indikator aplikasi di pojok kanan atas. Pastikan telah berubah menjadi warna hijau dengan teks Running.",
+        "explain": "Status hijau menandakan container Docker telah aktif, lulus health-check, dan port aplikasi merespons traffic dengan normal.",
+        "tip": "💡 Catatan: Aplikasi Anda sudah berjalan sempurna di server Sitkrop Infra!"
+    },
+    {
+        "num": "24",
+        "title": "Membuka Menu Domains",
+        "phase": "Fase 5: Custom Subdomain",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_145539.png",
+        "action": "Pada menu navigasi aplikasi di sebelah kiri, klik submenu Domains (atau gulir ke bagian General Configuration &rarr; Domains).",
+        "explain": "Secara default Coolify menugaskan URL acak. Kita akan menggantinya dengan subdomain resmi Proxsis berakhiran .connect.proxsis.com.",
+        "tip": "💡 Catatan: Fitur routing Traefik akan otomatis membaca perubahan domain ini tanpa restart host server."
+    },
+    {
+        "num": "25",
+        "title": "Mengganti Domain Menjadi Subdomain Pilihan",
+        "phase": "Fase 5: Custom Subdomain",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_145642.png",
+        "action": "Ganti alamat domain acak pada kolom input dengan format resmi:<br><code style='font-size:9pt; font-weight:bold; color:#0284c7;'>https://&lt;nama-aplikasi&gt;.connect.proxsis.com</code><br>setelah diisi, klik tombol Save.",
+        "explain": "Awalan <code>https://</code> wajib disertakan agar Traefik otomatis menerapkan sertifikat SSL dan mengaktifkan proteksi HTTPS.",
+        "tip": "💡 Catatan: Gunakan nama subdomain yang ringkas dan relevan dengan fungsi aplikasi atau PT Anda."
+    },
+    {
+        "num": "26",
+        "title": "Memahami Status 'Changes pending'",
+        "phase": "Fase 5: Custom Subdomain",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_145732.png",
+        "action": "Setelah menyimpan domain baru, perhatikan badge kuning bertuliskan Changes pending yang muncul di bagian atas halaman.",
+        "explain": "Notifikasi ini menginformasikan bahwa perubahan domain telah disimpan di database dan memerlukan proses redeploy singkat agar rute Traefik diperbarui.",
+        "tip": "💡 Catatan: Kondisi ini bukan tanda error. Silakan lanjutkan ke langkah terakhir di bawah ini untuk mengaktifkannya."
+    },
+    {
+        "num": "27",
+        "title": "Klik 'Redeploy' & Aplikasi Resmi Online!",
+        "phase": "Fase 5: Custom Subdomain",
+        "img": "/home/cleavers/Deploy Coolify/Screenshot_20261017_145806.png",
+        "action": "Klik tombol Redeploy (atau ikon restart) di pojok kanan atas. Mohon tunggu beberapa detik hingga proses pembaruan proxy Traefik selesai.",
+        "explain": "Aplikasi Anda kini telah aktif secara resmi dan dapat diakses oleh publik melalui alamat domain baru yang rapi, cepat, dan terproteksi SSL.",
+        "tip": "💡 Catatan: Selanjutnya, setiap pembaruan kode yang di-push ke GitHub otomatis di-deploy oleh Coolify tanpa tindakan manual lagi."
+    }
+]
+
+# Generate pages in pairs (2 steps per page)
+step_html_blocks = []
+for i in range(0, len(steps_data), 2):
+    pair = steps_data[i:i+2]
+    block = '<div class="page-pair">\n'
+    for item in pair:
+        block += f"""  <div class="step-card">
+    <div class="step-header">
+      <div>
+        <span class="step-badge">LANGKAH {item['num']}</span>
+        <span class="step-title">{item['title']}</span>
+      </div>
+      <span class="phase-badge">{item['phase']}</span>
+    </div>
+    <div class="step-action">📌 <strong>Petunjuk Langkah:</strong> {item['action']}</div>
+    <div class="step-explain">ℹ️ <strong>Penjelasan:</strong> {item['explain']}</div>
+    <div class="step-img-frame">
+      <img src="{item['img']}" alt="{item['title']}" />
+    </div>
+    <div class="step-tips-box">
+      {item['tip']}
+    </div>
+  </div>\n"""
+    block += '</div>\n'
+    step_html_blocks.append(block)
+
+all_steps_html = "".join(step_html_blocks)
+
+# Additional section: Multi-PT & Sharing Server Guide
+multi_pt_section = """
+<!-- HALAMAN: PANDUAN MULTI-PT & SHARING SERVER -->
+<div class="section-break">
+  <div class="section-header-block">
+    <h2>BAB 5: STRATEGI MANAJEMEN MULTI-PT & SHARING SERVER</h2>
+    <p>Panduan arsitektur dan pembagian akses antar-PT (misal: PT Proxsis & Co dan PT Synergi) di Coolify.</p>
+  </div>
+
+  <div class="card-box">
+    <h3>1. Mengapa Satu Server Fisik Tidak Bisa Dibagi ke Beda Team Secara Native?</h3>
+    <p style="margin: 0; font-size: 8pt; color: #475569; line-height: 1.45;">
+      Di arsitektur Coolify v4, sebuah server fisik/IP (seperti <code>192.168.10.21</code>) terikat eksklusif ke satu <code>team_id</code>. Jika ada Team baru dibuat di dashboard, Team tersebut tidak bisa menambahkan server yang sama karena Coolify memblokir duplikasi IP untuk mencegah tabrakan port Docker dan Traefik proxy.
+    </p>
+  </div>
+
+  <div class="card-box">
+    <h3>2. Tabel Perbandingan 3 Solusi Pembagian Antar-PT</h3>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Pendekatan</th>
+          <th>Kelebihan</th>
+          <th>Kekurangan / Konsekuensi</th>
+          <th>Rekomendasi Penggunaan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Opsi 1: Project per PT (1 Team Sama)</strong></td>
+          <td>&bull; Hemat resource (1 server dipakai bersama)<br>&bull; Mudah dipantau oleh tim IT Pusat<br>&bull; 1 Project bisa menampung banyak aplikasi & DB</td>
+          <td>&bull; RBAC masih tingkat Team (user Admin bisa melihat project PT lain)<br>&bull; Berbagi kuota CPU/RAM server</td>
+          <td><strong>Sangat Disarankan</strong> jika deployment dikelola terpusat oleh IT Pusat / Biztech.</td>
+        </tr>
+        <tr>
+          <td><strong>Opsi 2: Auto-Deploy Git Webhook</strong></td>
+          <td>&bull; Hemat server (1 server bersama)<br>&bull; Developer PT sama sekali tidak bisa mengintip project lain karena tidak login Coolify</td>
+          <td>&bull; Developer tidak bisa melihat log real-time di UI Coolify (harus minta bantuan IT)</td>
+          <td><strong>Paling Aman & Praktis</strong> jika developer PT hanya butuh fitur auto-deploy saat git push.</td>
+        </tr>
+        <tr>
+          <td><strong>Opsi 3: Virtualisasi (VM / LXC Terpisah)</strong></td>
+          <td>&bull; Isolasi 100% aman (Team terpisah)<br>&bull; CPU/RAM terbagi rata secara terisolasi<br>&bull; Masing-masing PT punya server sendiri</td>
+          <td>&bull; Butuh sedikit RAM/CPU ekstra untuk OS VM baru di Proxmox/ESXi</td>
+          <td><strong>Sangat Disarankan</strong> jika masing-masing PT punya tim DevOps sendiri yang wajib login dashboard.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card-box">
+    <h3>3. Desain Hirarki Project per PT yang Rapi</h3>
+    <div class="code-block" style="background: #1e293b; color: #e2e8f0;">[Team: Proxsis Group]
+  ├── [Server: Sitkrop Infra (192.168.10.21)] &lt;-- Digunakan Bersama
+  │
+  ├── [Project 1: PT Proxsis & Co]
+  │     ├── Env: Production (Landing Page, ERP, Database PostgreSQL)
+  │     └── Env: Staging (Versi Uji Coba)
+  │
+  └── [Project 2: PT Synergi]
+        ├── Env: Production (Web Synergi, API Service, Redis)
+        └── Env: Staging (Fitur Baru)</div>
+  </div>
+</div>
+
+<!-- HALAMAN TERAKHIR: TROUBLESHOOTING & FAQ -->
+<div>
+  <div class="section-header-block" style="background: #0f172a;">
+    <h2>BAB 6: TROUBLESHOOTING & CHECKLIST VERIFIKASI</h2>
+    <p>Solusi cepat untuk kendala umum yang sering ditemui saat deployment.</p>
+  </div>
+
+  <div class="trouble-grid">
+    <div class="trouble-card">
+      <strong>1. Kenapa Muncul Status 'Changes Pending'?</strong>
+      Setiap kali mengubah nama domain atau port, Coolify tidak langsung mematikan aplikasi yang sedang berjalan. Klik tombol <strong>Redeploy</strong> di kanan atas untuk menerapkan konfigurasi domain baru ke Traefik proxy.
+    </div>
+
+    <div class="trouble-card">
+      <strong>2. Bagaimana Mengisi Environment Variables (.env)?</strong>
+      Buka menu <strong>Environment Variables</strong> di navigasi kiri aplikasi &rarr; klik <strong>Developer View</strong> &rarr; tempelkan (paste) seluruh isi file <code>.env</code> Anda &rarr; klik <strong>Save</strong> lalu klik <strong>Redeploy</strong>.
+    </div>
+
+    <div class="trouble-card">
+      <strong>3. Aplikasi Berstatus Merah (Exited / Crash)?</strong>
+      Buka tab <strong>Logs</strong> di menu aplikasi. Cari baris error berwarna merah di bagian paling bawah. Penyebab umum: port aplikasi berbeda dengan <code>ports_exposes</code> atau file <code>.env</code> database belum terisi.
+    </div>
+
+    <div class="trouble-card">
+      <strong>4. Menghapus Aplikasi & Project Secara Bersih</strong>
+      Coolify memiliki proteksi data: Project tidak dapat dihapus jika masih ada aplikasi aktif di dalamnya. Masuk ke aplikasi &rarr; buka <em>Settings / Danger Zone</em> &rarr; klik <em>Delete</em>, setelah bersih baru hapus Project-nya.
+    </div>
+  </div>
+
+  <div class="card-box" style="margin-top: 10px;">
+    <h3>Kontak Bantuan & Dukungan Teknis</h3>
+    <table style="width: 100%; font-size: 8pt; color: #334155;">
+      <tr>
+        <td style="width: 140px; font-weight: 600;">Tim Pengelola:</td>
+        <td>IT Infrastructure & Biztech Proxsis Group</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600;">Email Dukungan:</td>
+        <td><code>biztech@proxsisgroup.com</code></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600;">Dashboard Resmi:</td>
+        <td><code>https://connect.proxsis.com</code></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600;">Server Default:</td>
+        <td><code>Sitkrop Infra (192.168.10.21)</code></td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="text-align: center; color: #94a3b8; font-size: 7.5pt; margin-top: 15px;">
+    Dokumen Panduan Resmi &bull; Proxsis Group Managed IT &bull; Hak Cipta Dilindungi Undang-Undang &bull; Tahun 2026
+  </div>
+</div>
+
+</body>
+</html>
+"""
+
+full_html = html_content + all_steps_html + multi_pt_section
+
+html_path = "/home/cleavers/Dokumen/coolify_new/Panduan_Deployment_Coolify_Bergambar.html"
+pdf_path = "/home/cleavers/Dokumen/coolify_new/Panduan_Deployment_Coolify_Bergambar.pdf"
+
+with open(html_path, "w", encoding="utf-8") as f:
+    f.write(full_html)
+
+print(f"HTML generated at {html_path}")
+print("Rendering PDF with WeasyPrint...")
+doc = weasyprint.HTML(filename=html_path)
+doc.write_pdf(pdf_path)
+print(f"PDF generated successfully at {pdf_path}")
+print(f"PDF size: {os.path.getsize(pdf_path)} bytes")
